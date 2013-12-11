@@ -494,6 +494,7 @@ public class GamePanel extends JPanel
       if(event.getSource() == rollDieButton){
         System.out.println("die rolled");
         trivialpursuit.rollDice();
+        dieRollResult.setVisible(true);
         dieRollResult.setText("Die roll result: " + trivialpursuit.mostRecentRoll);
         rollDieButton.setEnabled(false);
         
