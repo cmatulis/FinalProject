@@ -1,12 +1,8 @@
-//// BUGS/IMPROVEMENTS NEEDED:
-// SHUFFLE QUESTIONS
-// JAVADOC/COMMENT
-// FIX DUPLICATE VARIABLES
 
 /** Code for playing a Trivial Pursuit-esque game.
   * 
   * Written by: Catherine Matulis
-  * Modified date: December 9, 2013
+  * Modified date: December 11, 2013
   */
 
 import java.util.Arrays;
@@ -17,6 +13,7 @@ import javax.swing.*;
 
 public class TrivialPursuit {
   
+  // instance variables
   String currentQuestion, choiceA, choiceB, choiceC, choiceD, correctAnswer, p1Name, p2Name;
   int numRounds, p1score, p2score, totalAnswered, mostRecentRoll, turn, diceSides = 6;
   TPQuestions questionbank;
@@ -43,8 +40,8 @@ public class TrivialPursuit {
   }
   
   /**
-   * Resets the statistics of a Trivial Pursuit game to their original values.  To be used if the players begin one game and
-   * want to play another.
+   * Resets the variables associated with a Trivial Pursuit game to their original values.  
+   * To be used if the players begin one game and want to play another.
    *
    */ 
   public void resetStats(){
@@ -66,6 +63,8 @@ public class TrivialPursuit {
    * @return 1 if it is player 1's turn, 2 if it is player 2's turn
    */ 
   public int whoseTurn(){
+    // player 1 always goes first, so it is always player 1's turn when an 
+    // even number of questions have been answered
     if (totalAnswered%2 == 0 ){
       turn = 1;
     }
@@ -137,12 +136,16 @@ public class TrivialPursuit {
     else if (c.equals(Color.pink)){
       qlist = questionbank.pinkquestions;
     }
+    // list contains a question followed by four answer choices and the correct answer
+    // questions are in random order, so this will give different questions each time the game is played
     currentQuestion = qlist.pop(); 
     choiceA = qlist.pop();
     choiceB = qlist.pop();
     choiceC = qlist.pop();
     choiceD = qlist.pop();
     correctAnswer = qlist.pop();
+    
+    // add back to list in case the game is very long and questions need to be repeated
     qlist.add(currentQuestion);
     qlist.add(choiceA);
     qlist.add(choiceB);
@@ -197,6 +200,9 @@ public class TrivialPursuit {
     legalPositionsi.clear();
     legalPositionsj.clear();
     LinkedList<String> stringPositions = gamegraph.getNeighbors(boardPosition, dieResult);
+    
+    // vertices on game graph are given as strings, so these are converted into integers representing
+    // the i and j coordinates of an accessible button on the game board
     for (int i = 0; i < stringPositions.size(); i++){
       String xcoord = Character.toString(stringPositions.get(i).charAt(0));
       String ycoord = Character.toString(stringPositions.get(i).charAt(1));
@@ -212,9 +218,13 @@ public class TrivialPursuit {
    * @return true if the game is over, false if it is not
    */ 
   public boolean isGameOver(int gameVersion){
+    // in one version, game ends when all game tiles have been visited (vertices removed from
+    // game graph as questions are answered)
     if (gameVersion == 0){
       return gamegraph.isEmpty(); 
     }
+    
+    // in the other version, game ends when one player has correctly answered a question from each color category
     else{
       return (p1colors.size() == 6 | p2colors.size() == 6);
     }
@@ -232,6 +242,8 @@ public class TrivialPursuit {
   public void statistics(boolean correctAnswer, Color tileColor){
     if (totalAnswered%2 == 0 && correctAnswer){
       p1score++;
+      // if player answers a question from a particular category correctly (for the first time), 
+      // add the category to the list of colors the player has completed
       if (!p1colors.contains(tileColor)){
         p1colors.add(tileColor);
       }
@@ -242,13 +254,15 @@ public class TrivialPursuit {
         p2colors.add(tileColor);
       }
     }
+    
+    // show a message indicating if the player's answer is correct
     if (correctAnswer){
       JOptionPane correct = new JOptionPane();
-      correct.showMessageDialog(correct, "Correct!");
+      JOptionPane.showMessageDialog(correct, "Correct!");
     }
     else if (!correctAnswer){
       JOptionPane incorrect = new JOptionPane();
-      incorrect.showMessageDialog(incorrect, "Sorry, Incorrect!");
+      JOptionPane.showMessageDialog(incorrect, "Sorry, Incorrect!");
     }
     totalAnswered++;
   }

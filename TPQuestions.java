@@ -20,6 +20,8 @@ public class TPQuestions{
   
   public LinkedList<String> loadQuestions(String filename){
     LinkedList<String> questions = new LinkedList<String>();
+    
+    // read questions from text file into linked list
     try {
       Scanner reader = new Scanner(new File(filename));
       while (reader.hasNextLine()) {
@@ -32,11 +34,12 @@ public class TPQuestions{
     
     LinkedList<Integer> questionOrder = new LinkedList<Integer>();
     
+    // make linked list of indices of questions, shuffle it, and put questions in this order
     for (int i = 0; i < questions.size(); i += 6){
       questionOrder.add(i);
-
+      
     }
-     Collections.shuffle(questionOrder);
+    Collections.shuffle(questionOrder);
     System.out.println(questionOrder);
     LinkedList<String> temp = new LinkedList<String>();
     for (int j: questionOrder){
@@ -48,13 +51,13 @@ public class TPQuestions{
     
     questions = temp;
     return questions;
- 
+    
   }
   
   public static void main (String[] args){
     TPQuestions test = new TPQuestions();
     System.out.println(test.bluequestions);
-   
+    
   }
   
 }

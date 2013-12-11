@@ -1,14 +1,12 @@
 //// BUGS/IMPROVEMENTS NEEDED:
 // JAVADOC/COMMENT
 // PUT REPETETIVE ACTIONS IN SEPARATE METHODS
-// WHAT TO DO IF PLAYER HITS X INSTEAD OF ANSWERING A QUESTION (REOPEN QUESTION BOX
-// WITH THE SAME QUESTION)
+// DISABLE ROLL DIE BUTTON WHILE ANSWERING QUESTION
 // SIDE PANELS: ON SEPARATE LINES, SHOW # OF QUESTIONS ANSWERED CORRECTLY AND
 // COLORS CATEGORIES REMAINING (IN VERSION 2)
 // CHANGE COLOR FOR DIE ROLL RESULTS
 // CHANGE COLOR/FONT FOR #1 AND #2 ON JBUTTONS
 // RENAME DUPLICATE VARIABLES
-// PUT ANSWER CHOICES IN LIST INSTEAD OF DROP DOWN MENU (IF POSSIBLE)
 // ADD TITLES TO JOPTIONPANES
 // FIX THE IMAGES THAT APPEAR IN JOPTIONPANES
 
@@ -17,7 +15,7 @@
  * Purpose: Creates the panel that contains the game board and determines how
  * the board will respond to user interactions
  * Written by: Catherine Matulis
- * Modified date: December 9, 2013
+ * Modified date: December 11, 2013
  */
 
 import java.awt.*;
@@ -38,8 +36,7 @@ public class GamePanel extends JPanel
   private JTextArea player1Score, player2ScoreLabel, player2Score, player1Colors, player1Red, player1Blue, player1Green, player1Yellow, player1Orange, player1Pink;
   private JTextArea player2Colors, player2Red, player2Blue, player2Green, player2Yellow, player2Orange, player2Pink;
   private JButton[][] buttons; 
-  private JOptionPane getP1Name;
-  private JOptionPane getp2Name;
+  private JOptionPane getP1Name, getP2Name;
   private DefaultListModel listmodel;
   private JRadioButton answerA, answerB, answerC, answerD;
   private ButtonListener listener;
@@ -460,6 +457,9 @@ public class GamePanel extends JPanel
               }
               
               trivialpursuit.statistics(selection.equals(trivialpursuit.correctAnswer), buttons[i][j].getBackground());
+              if (gameVersion == 1){
+              setColorCategoriesArea(buttons[i][j].getBackground());
+              }
               System.out.println("Player " + trivialpursuit.whoseTurn() + "'s categories answered: \n");
               if (trivialpursuit.whoseTurn() == 1){
                 System.out.println(trivialpursuit.p1colors);
@@ -469,6 +469,7 @@ public class GamePanel extends JPanel
               }
               if (gameVersion == 1){
                 setAllButtons(gameVersion); 
+                rollDieButton.setEnabled(true);
                 
               }
               
@@ -494,6 +495,7 @@ public class GamePanel extends JPanel
         System.out.println("die rolled");
         trivialpursuit.rollDice();
         dieRollResult.setText("Die roll result: " + trivialpursuit.mostRecentRoll);
+        rollDieButton.setEnabled(false);
         
         if (trivialpursuit.whoseTurn() == 1){
           boardPosition = (Integer.toString(p1i).concat(Integer.toString(p1j)));
@@ -585,6 +587,50 @@ public class GamePanel extends JPanel
       buttons[m][n].setOpaque(k);
       buttons[m][n].setBorderPainted(!k);
       buttons[m][n].setEnabled(k);
+      
+      
+    }
+    
+    public void setColorCategoriesArea(Color c){
+      if (trivialpursuit.p1colors.contains(Color.red) && trivialpursuit.whoseTurn() == 2){
+        player1Red.setVisible(false);
+      }
+      if (trivialpursuit.p1colors.contains(Color.orange) && trivialpursuit.whoseTurn() == 2){
+        player1Orange.setVisible(false);
+      }
+      if (trivialpursuit.p1colors.contains(Color.green) && trivialpursuit.whoseTurn() == 2){
+        player1Green.setVisible(false);
+      }
+      if (trivialpursuit.p1colors.contains(Color.blue) && trivialpursuit.whoseTurn() == 2){
+        player1Blue.setVisible(false);
+      }
+      if (trivialpursuit.p1colors.contains(Color.yellow) && trivialpursuit.whoseTurn() == 2){
+        player1Yellow.setVisible(false);
+      }
+      if (trivialpursuit.p1colors.contains(Color.pink) && trivialpursuit.whoseTurn() == 2){
+        player1Pink.setVisible(false);
+      }
+      if (trivialpursuit.p2colors.contains(Color.red) && trivialpursuit.whoseTurn() == 1){
+        player2Red.setVisible(false);
+      }
+      if (trivialpursuit.p2colors.contains(Color.orange) && trivialpursuit.whoseTurn() == 1){
+        player2Orange.setVisible(false);
+      }
+      if (trivialpursuit.p2colors.contains(Color.green) && trivialpursuit.whoseTurn() == 1){
+        player2Green.setVisible(false);
+      }
+      if (trivialpursuit.p1colors.contains(Color.blue) && trivialpursuit.whoseTurn() == 1){
+        player2Blue.setVisible(false);
+      }
+      if (trivialpursuit.p2colors.contains(Color.yellow) && trivialpursuit.whoseTurn() == 1){
+        player2Yellow.setVisible(false);
+      }
+      if (trivialpursuit.p2colors.contains(Color.pink) && trivialpursuit.whoseTurn() == 1){
+        player2Pink.setVisible(false);
+      }
+      
+        
+      
       
       
     }
